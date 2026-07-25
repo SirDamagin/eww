@@ -1,0 +1,17 @@
+(defwindow fastfetch
+        :monitor 0
+        :stacking "bottom" ;; NO OVERLAP DEL DESKTOP O FINESTRE
+        :windowtype "normal"
+        :wm-ignore false
+        :geometry (geometry 
+                        :x "1586px"
+                        :y "900px"
+                  )
+        (box
+            :class "fastbox"
+            (image
+                :class "fastimage"
+                :path "/home/francesco/.config/eww/chiave5.png"
+            )
+        )
+)

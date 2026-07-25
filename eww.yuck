@@ -1,0 +1,117 @@
+(include "/home/francesco/.config/eww/fastfetch.yuck")
+(include "/home/francesco/.config/eww/cose_sospette/eww.yuck")
+
+
+(defpoll titlescript 
+        :interval "1s"
+        "node /home/francesco/.config/eww/title.js")
+(defpoll artistscript 
+        :interval "1s"
+        "node /home/francesco/.config/eww/artist.js")
+(defpoll valuescript
+        :interval "1s"  
+        "node /home/francesco/.config/eww/value.js")
+(defpoll volumescript
+        :interval "1s"  
+        "node /home/francesco/.config/eww/volume.js")
+(defpoll maxscript
+        :interval "1s"  
+        "node /home/francesco/.config/eww/max.js")
+
+;; DEBUG ---> eww open spotify --debug
+
+(defwindow spotify  
+        :monitor 0
+        :stacking "bottom" ;; NO OVERLAP DEL DESKTOP O FINESTRE
+        :windowtype "normal"
+        :wm-ignore false
+        :geometry (geometry 
+                        :x "2084px"
+                        :y "50px"
+                        :width "0px"
+                        :height "200px"
+                  )
+        (box 
+                :class "mainbox" 
+                :space-evenly false
+                :orientation "vertical"
+                (box 
+                        :class "textbox" 
+                        :orientation "vertical"
+                        (label
+                                :class "title"
+                                :text titlescript  
+                                :limit-width 6
+                                :xalign 0    
+                        ) 
+                        (label     
+                                :class "artist"
+                                :text artistscript   
+                                :xalign 0 
+                        )               
+                )    
+                (box
+                        :class "underbox"
+                        :height 130
+                        :space-evenly false
+                        (box
+                                :class "sxbox"
+                                :orientation "vertical"
+                                (box
+                                (scale
+                                                :min 0
+                                                :max maxscript
+                                                :class "progressbar"
+                                                :value valuescript
+                                                :onchange "playerctl position {}"
+                                        )
+                                )  
+                                (box
+                                        :spacing 60
+                                        :class "buttonbox"
+                                        (button
+                                                :class "controls"
+                                                :onclick "playerctl previous"
+                                                (image 
+                                                        :style "margin-right: 5px"
+                                                        :path "/home/francesco/.config/eww/skiprv.svg" 
+                                                        :image-width 16
+                                                        :image-height 16
+                                                )        
+                                        )
+                                        (button
+                                                :class "controls"
+                                                :onclick "playerctl play-pause"
+                                                (image 
+                                                        :path "/home/francesco/.config/eww/pause.svg" 
+                                                        :image-width 16
+                                                        :image-height 16
+                                                ) 
+                                        )
+                                        (button
+                                                :class "controls"
+                                                :onclick "playerctl next"
+                                                (image 
+                                                        :style "margin-left: 5px"
+                                                        :path "/home/francesco/.config/eww/skip.svg" 
+                                                        :image-width 16
+                                                        :image-height 16
+                                                )   
+                                        )
+                                )  
+                        )  
+                        (box
+                                :class "buttonbox"
+                                (scale
+                                        :class "progressbar2"
+                                        :orientation "v"
+                                        :flipped true
+                                        :min 0
+                                        :max 100
+                                        :value volumescript
+                                        :onchange "wpctl set-volume $(wpctl status | grep -i brave | grep -oP '\\d+' | tail -1) $(awk 'BEGIN {print {}/100}')"
+                                )
+                        ) 
+                )      
+        )          
+) 

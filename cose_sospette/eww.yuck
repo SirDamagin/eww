@@ -1,0 +1,37 @@
+(defvar value false)
+
+(deflisten cava
+  "bash /home/francesco/.config/eww/cose_sospette/cava.sh"
+)
+
+(defwidget music-widget []
+  (box :class "musicbox"
+       :orientation "v"   
+       :space-evenly false
+       :stacking "bottom"
+       (transform
+          :scale-y "1080%"
+          (label
+              :yalign 0
+              :class "cava-visualizer"
+              :text cava
+          )
+       )
+       
+  )
+)
+
+
+(defwindow music-widget
+  :monitor 0
+  :stacking "bottom"
+  :geometry 
+  (
+    geometry :x "1923px" 
+             :y "365px" 
+             :width "575px" 
+             :height "400px"
+  )
+  :wm-ignore true
+  (music-widget)
+)
